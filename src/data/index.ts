@@ -27,7 +27,7 @@ export const eventDetails: EventDetails = {
 // Contact information
 export const contactInfo: ContactInfo = {
   email: 'souqedeccan@gmail.com',
-  phone: '9703539316 / 7075806460',
+  phone: '7416812288, 7416483737',
   address: 'Kings Crown Convention & Kings Classic Garden, Guddi Malkapur – Mehdipatnam',
   city: 'Hyderabad, Telangana',
   pincode: '500028',
@@ -36,7 +36,7 @@ export const contactInfo: ContactInfo = {
 // Social links
 export const socialLinks: SocialLink[] = [
   { platform: 'Instagram', url: 'https://www.instagram.com/souqedeccan', icon: 'instagram' },
-  { platform: 'WhatsApp', url: 'https://wa.me/919703539316', icon: 'whatsapp' },
+  { platform: 'WhatsApp', url: 'https://wa.me/917416812288', icon: 'whatsapp' },
 ]
 
 // Expo categories

@@ -400,14 +400,14 @@ export function About() {
                     <div className="absolute left-0 top-2 w-1 h-4 bg-gradient-to-b from-gold to-gold/30" />
                     <span className="text-gold font-heading font-semibold text-sm block mb-1">Riyadh</span>
                     <p className="font-body text-coffee text-base leading-relaxed">
-                      13th & 14th March 2026
+                      to be revealed soon
                     </p>
                   </div>
                   <div className="relative pl-6">
                     <div className="absolute left-0 top-2 w-1 h-4 bg-gradient-to-b from-gold to-gold/30" />
                     <span className="text-gold font-heading font-semibold text-sm block mb-1">Jeddah</span>
                     <p className="font-body text-coffee text-base leading-relaxed">
-                      17th & 18th March 2026
+                      to be revealed soon
                     </p>
                   </div>
                 </div>

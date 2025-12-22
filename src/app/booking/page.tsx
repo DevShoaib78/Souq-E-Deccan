@@ -174,10 +174,10 @@ export default function BookingPage() {
                     Need help choosing?
                   </p>
                   <a
-                    href="tel:9703539316"
+                    href="tel:7416812288"
                     className="font-body text-teal font-medium hover:underline"
                   >
-                    Call us: 9703539316 / 7075806460
+                    Call us: 7416812288, 7416483737
                   </a>
                 </div>
               </div>
@@ -259,7 +259,7 @@ export default function BookingPage() {
                 <p className="font-body text-xs text-coffee/50 mb-6">
                   A confirmation email will be sent to your registered email address.
                   <br />
-                  For queries, call us at 9703539316 / 7075806460
+                  For queries, call us at 7416812288, 7416483737
                 </p>
 
                 <button

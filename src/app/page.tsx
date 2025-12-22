@@ -40,8 +40,7 @@ export default function HomePage() {
           {/* Event Details */}
           <div className="flex flex-col md:flex-row items-center justify-center gap-6 md:gap-12 mb-10 text-coffee/60 font-body">
             <div className="text-center">
-              <span className="block text-3xl font-heading font-bold text-maroon">26-28</span>
-              <span className="text-sm">February 2025</span>
+              <span className="block text-2xl font-heading font-bold text-maroon">Dates to be announced soon!</span>
             </div>
             <div className="hidden md:block w-px h-12 bg-gold/30" />
             <div className="text-center">

@@ -210,25 +210,6 @@ export function Navigation() {
               <div className="h-1 bg-gradient-to-r from-gold via-gold-400 to-gold" />
 
               <div className="relative h-full flex flex-col pt-24 px-8">
-                {/* Logo in Mobile Menu */}
-                <div className="flex items-center gap-3 mb-8 pb-6 border-b border-gold/20">
-                  <div className="relative w-12 h-12">
-                    <Image
-                      src="/logo.png"
-                      alt="Souq-E-Deccan Logo"
-                      fill
-                      className="object-contain"
-                    />
-                  </div>
-                  <div>
-                    <span className="block font-heading font-bold text-xl text-maroon">
-                      Souq-E-Deccan
-                    </span>
-                    <span className="block font-body text-xs text-gold-600 tracking-wider">
-                      The Deccan Market
-                    </span>
-                  </div>
-                </div>
 
                 {/* Navigation Links */}
                 <nav className="flex flex-col gap-1">
@@ -281,7 +262,7 @@ export function Navigation() {
                     className="pt-6 border-t border-gold/20"
                   >
                     <p className="font-body text-sm text-coffee/60 mb-1">
-                      February 26-28, 2025
+                      Dates to be announced soon!
                     </p>
                     <p className="font-body text-sm text-coffee/60">
                       Kings Crown Convention & Kings Classic Garden, Hyderabad
