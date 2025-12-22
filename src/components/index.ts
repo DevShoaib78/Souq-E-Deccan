@@ -5,5 +5,5 @@ export { About } from './about'
 export { Highlights } from './highlights'
 export { Team } from './team'
 export { SmoothScroll } from './smooth-scroll'
-export { StallGrid, Legend, BookingSummary } from './booking'
+export { StallMapOverlay, BookingForm, StallLegend, LayoutSelector } from './booking'
 
