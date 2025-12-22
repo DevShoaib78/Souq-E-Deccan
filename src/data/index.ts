@@ -13,8 +13,8 @@ export const eventDetails: EventDetails = {
   name: 'Souq-E-Deccan',
   tagline: 'The Deccan Market of Heritage & Craft',
   dates: {
-    start: '2025-02-26',
-    end: '2025-02-28',
+    start: '2026-02-26',
+    end: '2026-02-28',
   },
   venue: {
     name: 'Kings Crown Convention & Kings Classic Garden',

@@ -111,7 +111,7 @@ export function Hero() {
         >
           <div className="flex items-center gap-2">
             <Calendar size={20} className="text-gold flex-shrink-0" />
-            <span>(to be announced soon)</span>
+            <span>{formatDateRange()}</span>
           </div>
           <div className="hidden sm:block w-1 h-1 bg-gold/50 rounded-full" />
           <div className="flex items-start sm:items-center gap-2">

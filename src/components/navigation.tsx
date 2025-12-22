@@ -262,7 +262,7 @@ export function Navigation() {
                     className="pt-6 border-t border-gold/20"
                   >
                     <p className="font-body text-sm text-coffee/60 mb-1">
-                      Dates to be announced soon!
+                      26-28 February 2026
                     </p>
                     <p className="font-body text-sm text-coffee/60">
                       Kings Crown Convention & Kings Classic Garden, Hyderabad

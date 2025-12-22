@@ -272,7 +272,7 @@ export function About() {
                     <div className="absolute left-0 top-2 w-1 h-4 bg-gradient-to-b from-gold to-gold/30" />
                     <span className="text-gold font-heading font-semibold text-sm block mb-1">Dates</span>
                     <p className="font-body text-coffee text-base leading-relaxed">
-                      to be announced soon
+                      26-28 February 2026
                     </p>
                   </div>
                   <div className="relative pl-6">
@@ -412,10 +412,10 @@ export function About() {
                   </div>
                 </div>
 
-                {/* Coming Soon Badge */}
+                {/* Venue Badge */}
                 <div className="relative">
-                  <div className="inline-flex items-center gap-2 px-4 py-2 border-2 border-gold/40 text-coffee/60 font-body font-medium text-sm italic">
-                    Venue to be announced soon
+                  <div className="inline-flex items-center gap-2 px-4 py-2 border-2 border-gold/40 text-coffee font-body font-medium text-sm">
+                    Kings Crown Convention, Hyderabad
                   </div>
                 </div>
 

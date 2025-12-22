@@ -82,12 +82,12 @@ export function Footer() {
               <li className="flex items-start gap-3">
                 <span className="text-gold font-medium min-w-[60px]">Dates:</span>
                 <span className="text-white/80">
-                  will be revealing soon
+                  26-28 February 2026
                 </span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-gold font-medium min-w-[60px]">Timings:</span>
-                <span className="text-white/80">will be revealing soon</span>
+                <span className="text-white/80">4:00 PM – 4:00 AM</span>
               </li>
               <li className="flex items-start gap-3">
                 <span className="text-gold font-medium min-w-[60px]">Venue:</span>
