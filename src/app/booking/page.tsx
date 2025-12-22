@@ -3,35 +3,58 @@
 import { useState, useCallback, useMemo } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, Info, Check, X } from 'lucide-react'
-import { StallGrid, Legend, BookingSummary } from '@/components/booking'
-import { getStallsByRow, eventDetails } from '@/data'
-import type { Stall } from '@/types'
+import { ArrowLeft, Info, CheckCircle2 } from 'lucide-react'
+import { 
+  StallMapOverlay, 
+  BookingForm, 
+  StallLegend, 
+  LayoutSelector 
+} from '@/components/booking'
+import { getStallsByLayout } from '@/data/stall-maps'
+import type { StallData, LayoutType } from '@/types/booking'
+import { eventDetails } from '@/data'
 
 export default function BookingPage() {
-  const [selectedStalls, setSelectedStalls] = useState<Stall[]>([])
-  const [showConfirmation, setShowConfirmation] = useState(false)
-  const stallsByRow = useMemo(() => getStallsByRow(), [])
+  // State
+  const [selectedLayout, setSelectedLayout] = useState<LayoutType>('lifestyle')
+  const [selectedStall, setSelectedStall] = useState<StallData | null>(null)
+  const [showForm, setShowForm] = useState(false)
+  const [showSuccess, setShowSuccess] = useState(false)
 
-  const handleStallSelect = useCallback((stall: Stall) => {
-    setSelectedStalls((prev) => {
-      const isAlreadySelected = prev.some((s) => s.id === stall.id)
-      if (isAlreadySelected) {
-        return prev.filter((s) => s.id !== stall.id)
-      }
-      return [...prev, stall]
-    })
+  // Get stalls for the selected layout
+  // In future: This would fetch from backend API with real availability status
+  const stalls = useMemo(() => getStallsByLayout(selectedLayout), [selectedLayout])
+
+  // Handlers
+  const handleLayoutChange = useCallback((layout: LayoutType) => {
+    setSelectedLayout(layout)
+    setSelectedStall(null) // Clear selection when changing layout
   }, [])
 
-  const handleRemoveStall = useCallback((stallId: string) => {
-    setSelectedStalls((prev) => prev.filter((s) => s.id !== stallId))
+  const handleStallSelect = useCallback((stall: StallData) => {
+    setSelectedStall(stall)
+    setShowForm(true)
   }, [])
 
-  const handleProceed = useCallback(() => {
-    setShowConfirmation(true)
+  const handleStallDeselect = useCallback(() => {
+    setSelectedStall(null)
+    setShowForm(false)
   }, [])
 
-  const totalPrice = selectedStalls.reduce((sum, stall) => sum + stall.price, 0)
+  const handleFormClose = useCallback(() => {
+    setShowForm(false)
+    setSelectedStall(null)
+  }, [])
+
+  const handleFormSuccess = useCallback(() => {
+    setShowForm(false)
+    setShowSuccess(true)
+    // Auto-hide success message after delay
+    setTimeout(() => {
+      setShowSuccess(false)
+      setSelectedStall(null)
+    }, 4000)
+  }, [])
 
   return (
     <>
@@ -56,8 +79,7 @@ export default function BookingPage() {
                 Book Your Stall
               </h1>
               <p className="font-body text-white/60 text-lg max-w-2xl">
-                Select your preferred stalls from the layout below. Choose from various
-                sizes and locations to showcase your craft at Souq-E-Deccan.
+                Select a zone below, then tap on any available stall to book your spot at Souq-E-Deccan.
               </p>
             </motion.div>
 
@@ -70,7 +92,14 @@ export default function BookingPage() {
             >
               <span className="flex items-center gap-2">
                 <span className="w-2 h-2 bg-gold rounded-full" />
-                to be announced soon
+                {new Date(eventDetails.dates.start).toLocaleDateString('en-IN', { 
+                  month: 'long', 
+                  day: 'numeric' 
+                })} - {new Date(eventDetails.dates.end).toLocaleDateString('en-IN', { 
+                  month: 'long', 
+                  day: 'numeric',
+                  year: 'numeric'
+                })}
               </span>
               <span className="hidden md:block">·</span>
               <span>{eventDetails.venue.name}</span>
@@ -79,201 +108,149 @@ export default function BookingPage() {
         </div>
 
         {/* Main Content */}
-        <div className="container-heritage py-12 md:py-16">
-          <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
-            {/* Stall Grid Section */}
-            <div className="lg:col-span-2 order-2 lg:order-1">
-              {/* Instructions */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="flex items-start gap-3 p-4 bg-teal/10 border border-teal/20 mb-8"
-              >
-                <Info className="text-teal flex-shrink-0 mt-0.5" size={20} />
-                <div>
-                  <p className="font-body text-coffee text-sm">
-                    <strong className="text-teal">Tap or click</strong> on any available stall
-                    to select it. Tap again to deselect. Selected stalls will be highlighted.
-                  </p>
-                </div>
-              </motion.div>
+        <div className="container-heritage py-8 md:py-12">
+          {/* Layout Selector */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="mb-8"
+          >
+            <LayoutSelector
+              selectedLayout={selectedLayout}
+              onLayoutChange={handleLayoutChange}
+            />
+          </motion.div>
 
-              {/* Legend */}
-              <div className="mb-8">
-                <Legend />
-              </div>
-
-              {/* The Stall Grid */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="bg-white border border-gold/20 p-6 md:p-8 overflow-x-auto"
-              >
-                <div className="min-w-[600px] pl-8 md:pl-12">
-                  <StallGrid
-                    stalls={stallsByRow}
-                    selectedStalls={selectedStalls}
-                    onStallSelect={handleStallSelect}
-                  />
-                </div>
-              </motion.div>
-
-              {/* Zoom Hint for Mobile */}
-              <p className="mt-4 text-center font-body text-xs text-coffee/40 md:hidden">
-                Scroll horizontally to view the entire layout
+          {/* Instructions */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="flex items-start gap-3 p-4 bg-teal/10 border border-teal/20 mb-6"
+          >
+            <Info className="text-teal flex-shrink-0 mt-0.5" size={20} />
+            <div>
+              <p className="font-body text-coffee text-sm">
+                <strong className="text-teal">Tap</strong> on any available stall (highlighted in gold) to select it. 
+                Use the zoom controls to navigate the layout. A form will appear to collect your details.
               </p>
             </div>
+          </motion.div>
 
-            {/* Booking Summary Sidebar */}
-            <div className="lg:col-span-1 order-1 lg:order-2">
-              <div className="lg:sticky lg:top-24">
-                <BookingSummary
-                  selectedStalls={selectedStalls}
-                  onRemoveStall={handleRemoveStall}
-                  onProceed={handleProceed}
-                />
+          {/* Legend */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="mb-6"
+          >
+            <StallLegend showBooked={true} />
+          </motion.div>
 
-                {/* Additional Info */}
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  transition={{ delay: 0.4 }}
-                  className="mt-6 p-4 bg-sand-50 border border-gold/10"
-                >
-                  <h4 className="font-heading font-semibold text-maroon mb-3">
-                    What&apos;s Included
-                  </h4>
-                  <ul className="space-y-2 font-body text-sm text-coffee/70">
-                    <li className="flex items-start gap-2">
-                      <Check className="text-teal flex-shrink-0 mt-0.5" size={14} />
-                      <span>All 3 days of the expo</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="text-teal flex-shrink-0 mt-0.5" size={14} />
-                      <span>Basic furniture and setup</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="text-teal flex-shrink-0 mt-0.5" size={14} />
-                      <span>Electricity and lighting</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="text-teal flex-shrink-0 mt-0.5" size={14} />
-                      <span>Stall signage</span>
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <Check className="text-teal flex-shrink-0 mt-0.5" size={14} />
-                      <span>Marketing & promotion</span>
-                    </li>
-                  </ul>
-                </motion.div>
-
-                {/* Contact for Help */}
-                <div className="mt-4 p-4 border border-dashed border-gold/30 text-center">
-                  <p className="font-body text-sm text-coffee/60">
-                    Need help choosing?
-                  </p>
-                  <a
-                    href="tel:7416812288"
-                    className="font-body text-teal font-medium hover:underline"
-                  >
-                    Call us: 7416812288, 7416483737
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Confirmation Modal */}
-      <AnimatePresence>
-        {showConfirmation && (
+          {/* Stall Map */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            transition={{ delay: 0.4 }}
+            className="bg-white border border-gold/20 p-4 md:p-6"
           >
-            {/* Backdrop */}
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              className="absolute inset-0 bg-maroon/80 backdrop-blur-sm"
-              onClick={() => setShowConfirmation(false)}
+            <StallMapOverlay
+              layout={selectedLayout}
+              stalls={stalls}
+              selectedStallId={selectedStall?.id ?? null}
+              onStallSelect={handleStallSelect}
+              onStallDeselect={handleStallDeselect}
             />
+          </motion.div>
 
-            {/* Modal */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 20 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-md bg-sand border border-gold/30 shadow-2xl"
-            >
-              {/* Close Button */}
-              <button
-                onClick={() => setShowConfirmation(false)}
-                className="absolute top-4 right-4 p-2 text-coffee/40 hover:text-maroon transition-colors"
-                aria-label="Close modal"
+          {/* Selected Stall Info (shown when selected but form not open) */}
+          <AnimatePresence>
+            {selectedStall && !showForm && !showSuccess && (
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: 20 }}
+                className="fixed bottom-0 left-0 right-0 md:relative md:mt-6 p-4 bg-maroon border-t md:border border-gold/30 shadow-lg md:shadow-none z-30"
               >
-                <X size={20} />
-              </button>
-
-              {/* Content */}
-              <div className="p-8 text-center">
-                {/* Success Icon */}
-                <div className="w-16 h-16 mx-auto mb-6 bg-teal flex items-center justify-center">
-                  <Check className="text-white" size={32} />
-                </div>
-
-                <h2 className="font-heading font-bold text-2xl text-maroon mb-2">
-                  Booking Request Received!
-                </h2>
-                <p className="font-body text-coffee/70 mb-6">
-                  Thank you for your interest in Souq-E-Deccan. Our team will
-                  contact you shortly to confirm your booking.
-                </p>
-
-                {/* Summary */}
-                <div className="bg-maroon/5 p-4 mb-6 text-left">
-                  <h3 className="font-heading font-semibold text-maroon mb-3">
-                    Your Selection
-                  </h3>
-                  <div className="space-y-2 font-body text-sm">
-                    <div className="flex justify-between">
-                      <span className="text-coffee/60">Stalls Selected:</span>
-                      <span className="text-coffee font-medium">
-                        {selectedStalls.map(s => s.id).join(', ')}
-                      </span>
+                <div className="container-heritage md:p-0">
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                    <div className="text-center sm:text-left">
+                      <p className="font-body text-white/70 text-sm">Selected Stall</p>
+                      <p className="font-heading font-bold text-xl text-gold">
+                        {selectedStall.label}
+                      </p>
                     </div>
-                    <div className="flex justify-between">
-                      <span className="text-coffee/60">Total Amount:</span>
-                      <span className="text-teal font-bold">
-                        ₹{totalPrice.toLocaleString('en-IN')}
-                      </span>
+                    <div className="flex gap-3">
+                      <button
+                        onClick={handleStallDeselect}
+                        className="px-5 py-2.5 border border-white/30 text-white font-body text-sm hover:bg-white/10 transition-colors"
+                      >
+                        Cancel
+                      </button>
+                      <button
+                        onClick={() => setShowForm(true)}
+                        className="px-5 py-2.5 bg-gold text-maroon font-body font-semibold text-sm hover:bg-gold-300 transition-colors"
+                      >
+                        Book This Stall
+                      </button>
                     </div>
                   </div>
                 </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
-                <p className="font-body text-xs text-coffee/50 mb-6">
-                  A confirmation email will be sent to your registered email address.
-                  <br />
-                  For queries, call us at 7416812288, 7416483737
-                </p>
+          {/* Contact Help */}
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+            className="mt-8 p-4 border border-dashed border-gold/30 text-center"
+          >
+            <p className="font-body text-sm text-coffee/60 mb-1">
+              Need help or have questions?
+            </p>
+            <a 
+              href="tel:+919885421522" 
+              className="font-body text-teal font-medium hover:underline"
+            >
+              Call us: +91 98854 21522
+            </a>
+          </motion.div>
+        </div>
+      </div>
 
-                <button
-                  onClick={() => setShowConfirmation(false)}
-                  className="w-full py-3 bg-maroon text-white font-body font-semibold tracking-wide hover:bg-maroon-600 transition-colors"
-                >
-                  Continue Browsing
-                </button>
-              </div>
-            </motion.div>
+      {/* Booking Form Modal */}
+      <AnimatePresence>
+        {showForm && selectedStall && (
+          <BookingForm
+            stall={selectedStall}
+            onClose={handleFormClose}
+            onSuccess={handleFormSuccess}
+          />
+        )}
+      </AnimatePresence>
+
+      {/* Success Toast */}
+      <AnimatePresence>
+        {showSuccess && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-6 py-4 bg-teal text-white shadow-xl"
+          >
+            <CheckCircle2 size={24} />
+            <div>
+              <p className="font-body font-semibold">Booking Request Sent!</p>
+              <p className="font-body text-sm text-white/80">
+                We&apos;ll contact you shortly to confirm.
+              </p>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
     </>
   )
 }
-
