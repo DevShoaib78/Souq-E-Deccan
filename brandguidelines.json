@@ -1,0 +1,263 @@
+{
+    "brand": {
+        "name": "Souq E Deccan",
+        "tagline": "A Curated Cultural Bazaar",
+        "vibe": [
+            "Premium",
+            "Cultural",
+            "Deccan Heritage",
+            "Timeless",
+            "Curated Bazaar"
+        ],
+        "description": "A premium cultural expo celebrating the rich heritage and artistry of the Deccan region"
+    },
+    "colors": {
+        "primary": {
+            "name": "Heritage Maroon",
+            "hex": "#5B1F1F",
+            "rgb": "91, 31, 31",
+            "usage": [
+                "Primary branding color",
+                "Hero sections",
+                "Headers",
+                "Highlights"
+            ]
+        },
+        "secondary": {
+            "name": "Antique Gold",
+            "hex": "#C9A24D",
+            "rgb": "201, 162, 77",
+            "usage": [
+                "Accents",
+                "Borders",
+                "Icons",
+                "Dividers",
+                "Emphasis elements"
+            ]
+        },
+        "background": {
+            "name": "Parchment Sand",
+            "hex": "#F5EEDC",
+            "rgb": "245, 238, 220",
+            "usage": [
+                "Main website background",
+                "Sections",
+                "Cards"
+            ]
+        },
+        "accent": {
+            "name": "Deccan Teal",
+            "hex": "#2E7C7A",
+            "rgb": "46, 124, 122",
+            "usage": [
+                "Buttons",
+                "Links",
+                "Hover states",
+                "Subtle highlights"
+            ]
+        },
+        "text": {
+            "dark": {
+                "name": "Coffee Brown",
+                "hex": "#2A1A14",
+                "rgb": "42, 26, 20",
+                "usage": [
+                    "Primary text",
+                    "Headings",
+                    "Body copy"
+                ]
+            },
+            "light": {
+                "name": "White",
+                "hex": "#FFFFFF",
+                "rgb": "255, 255, 255",
+                "usage": [
+                    "Text on dark backgrounds",
+                    "Text on maroon backgrounds"
+                ]
+            }
+        },
+        "semantic": {
+            "success": "#2E7C7A",
+            "warning": "#C9A24D",
+            "error": "#5B1F1F",
+            "info": "#2E7C7A"
+        }
+    },
+    "typography": {
+        "heading": {
+            "fontFamily": "Cormorant Garamond",
+            "category": "serif",
+            "fallback": "Georgia, Times New Roman, serif",
+            "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&display=swap",
+            "weights": {
+                "semibold": 600,
+                "bold": 700
+            },
+            "usage": [
+                "Hero headings",
+                "Section titles",
+                "Event titles",
+                "Decorative text"
+            ]
+        },
+        "body": {
+            "activeFont": "optionA",
+            "options": {
+                "optionA": {
+                    "fontFamily": "Lato",
+                    "category": "sans-serif",
+                    "fallback": "Helvetica, Arial, sans-serif",
+                    "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Lato:wght@300;400;500;700&display=swap",
+                    "weights": {
+                        "light": 300,
+                        "regular": 400,
+                        "medium": 500,
+                        "bold": 700
+                    },
+                    "usage": [
+                        "Body text",
+                        "Navigation",
+                        "Buttons",
+                        "Forms",
+                        "Descriptions"
+                    ]
+                },
+                "optionB": {
+                    "fontFamily": "Libre Franklin",
+                    "category": "sans-serif",
+                    "fallback": "Helvetica, Arial, sans-serif",
+                    "googleFontsUrl": "https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@300;400;500;700&display=swap",
+                    "weights": {
+                        "light": 300,
+                        "regular": 400,
+                        "medium": 500,
+                        "bold": 700
+                    },
+                    "usage": [
+                        "Body text",
+                        "UI elements",
+                        "Paragraphs",
+                        "Footer content"
+                    ]
+                }
+            }
+        },
+        "scale": {
+            "xs": "0.75rem",
+            "sm": "0.875rem",
+            "base": "1rem",
+            "lg": "1.125rem",
+            "xl": "1.25rem",
+            "2xl": "1.5rem",
+            "3xl": "1.875rem",
+            "4xl": "2.25rem",
+            "5xl": "3rem",
+            "6xl": "3.75rem",
+            "7xl": "4.5rem"
+        },
+        "lineHeight": {
+            "tight": 1.25,
+            "snug": 1.375,
+            "normal": 1.5,
+            "relaxed": 1.625,
+            "loose": 2
+        },
+        "letterSpacing": {
+            "tighter": "-0.05em",
+            "tight": "-0.025em",
+            "normal": "0",
+            "wide": "0.025em",
+            "wider": "0.05em",
+            "widest": "0.1em"
+        }
+    },
+    "usageRules": {
+        "typography": {
+            "headings": {
+                "rule": "Headings must always use Cormorant Garamond",
+                "allowedFonts": [
+                    "Cormorant Garamond"
+                ],
+                "allowedWeights": [
+                    600,
+                    700
+                ]
+            },
+            "body": {
+                "rule": "Body text must use either Lato OR Libre Franklin, never both simultaneously",
+                "allowedFonts": [
+                    "Lato",
+                    "Libre Franklin"
+                ],
+                "restriction": "Only ONE body font may be active at a time"
+            },
+            "navigation": {
+                "rule": "Navigation must always use the selected body font",
+                "inheritsFrom": "body"
+            },
+            "buttons": {
+                "rule": "Buttons must always use the selected body font",
+                "inheritsFrom": "body"
+            },
+            "forbidden": {
+                "rule": "Decorative or calligraphic fonts are forbidden for paragraphs and body content",
+                "forbiddenUsage": [
+                    "paragraphs",
+                    "body content",
+                    "long-form text"
+                ]
+            },
+            "readability": {
+                "rule": "Line-height must be comfortable and readable",
+                "minimumLineHeight": 1.5,
+                "recommendedLineHeight": 1.625
+            }
+        },
+        "colors": {
+            "backgrounds": {
+                "primary": "Use Parchment Sand (#F5EEDC) as the default background",
+                "dark": "Use Heritage Maroon (#5B1F1F) for hero sections and headers"
+            },
+            "text": {
+                "onLight": "Use Coffee Brown (#2A1A14) on light backgrounds",
+                "onDark": "Use White (#FFFFFF) on dark or maroon backgrounds"
+            },
+            "accents": {
+                "interactive": "Use Deccan Teal (#2E7C7A) for interactive elements",
+                "decorative": "Use Antique Gold (#C9A24D) for decorative accents"
+            }
+        },
+        "accessibility": {
+            "contrastRatio": {
+                "minimum": 4.5,
+                "recommended": 7
+            },
+            "focusStates": "All interactive elements must have visible focus indicators"
+        }
+    },
+    "metadata": {
+        "version": "1.0.0",
+        "createdAt": "2025-12-17",
+        "lastUpdated": "2025-12-17",
+        "author": "Souq E Deccan Design Team",
+        "projectName": "Souq E Deccan",
+        "projectType": "Premium Cultural Expo Website",
+        "compatibility": {
+            "frameworks": [
+                "React",
+                "Next.js",
+                "Vue",
+                "Angular"
+            ],
+            "styling": [
+                "Tailwind CSS",
+                "CSS Modules",
+                "Styled Components"
+            ]
+        },
+        "notes": {
+            "bodyFontSelection": "Change typography.body.activeFont to 'optionA' or 'optionB' to switch between Lato and Libre Franklin"
+        }
+    }
+}
