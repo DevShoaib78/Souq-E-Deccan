@@ -255,7 +255,7 @@ export default function AdminDashboard({ userEmail }: AdminDashboardProps) {
             
             {filteredStalls.length === 0 && (
               <div className="text-center py-10 text-slate-400">
-                No stalls found matching "{searchTerm}"
+                No stalls found matching &ldquo;{searchTerm}&rdquo;
               </div>
             )}
           </div>
