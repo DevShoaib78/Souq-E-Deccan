@@ -90,8 +90,6 @@ export function Navigation() {
                 </span>
               </div>
 
-              {/* Hover Underline */}
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-gold group-hover:w-full transition-all duration-500" />
             </Link>
 
             {/* Desktop Navigation */}
@@ -184,7 +182,7 @@ export function Navigation() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 z-40 lg:hidden"
+            className="fixed inset-0 z-[60] lg:hidden"
           >
             {/* Backdrop */}
             <motion.div
@@ -209,7 +207,18 @@ export function Navigation() {
               {/* Top Accent */}
               <div className="h-1 bg-gradient-to-r from-gold via-gold-400 to-gold" />
 
-              <div className="relative h-full flex flex-col pt-24 px-8">
+              <div className="relative h-full flex flex-col pt-6 px-8">
+                {/* Close Button */}
+                <div className="flex justify-end mb-6">
+                  <button
+                    onClick={closeMobileMenu}
+                    className="p-2 text-coffee hover:text-maroon hover:bg-maroon/10 transition-colors rounded"
+                    aria-label="Close menu"
+                  >
+                    <X size={28} />
+                  </button>
+                </div>
+
 
                 {/* Navigation Links */}
                 <nav className="flex flex-col gap-1">

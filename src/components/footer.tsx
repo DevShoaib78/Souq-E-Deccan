@@ -1,9 +1,11 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import Image from 'next/image'
 import { Instagram, Phone, Mail, MapPin, Calendar } from 'lucide-react'
 import { contactInfo, socialLinks, eventDetails } from '@/data'
+import { TermsModal } from './terms-modal'
 
 const socialIcons: Record<string, React.ReactNode> = {
   instagram: <Instagram size={20} />,
@@ -11,6 +13,7 @@ const socialIcons: Record<string, React.ReactNode> = {
 }
 
 export function Footer() {
+  const [isTermsOpen, setIsTermsOpen] = useState(false)
   const formatDate = (dateStr: string) => {
     return new Date(dateStr).toLocaleDateString('en-IN', {
       month: 'short',
@@ -111,7 +114,6 @@ export function Footer() {
                 { label: 'About the Expo', href: '#about' },
                 { label: 'Expo Highlights', href: '#highlights' },
                 { label: 'Book Your Stall', href: '/booking' },
-                { label: 'Terms & Conditions', href: '#' },
                 { label: 'Privacy Policy', href: '#' },
               ].map((link) => (
                 <li key={link.label}>
@@ -123,6 +125,14 @@ export function Footer() {
                   </Link>
                 </li>
               ))}
+              <li>
+                <button
+                  onClick={() => setIsTermsOpen(true)}
+                  className="text-white/70 hover:text-gold transition-colors duration-300 inline-block text-left"
+                >
+                  Terms & Conditions
+                </button>
+              </li>
             </ul>
           </div>
 
@@ -196,6 +206,9 @@ export function Footer() {
           </div>
         </div>
       </div>
+
+      {/* Terms & Conditions Modal */}
+      <TermsModal isOpen={isTermsOpen} onClose={() => setIsTermsOpen(false)} />
     </footer>
   )
 }
