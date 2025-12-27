@@ -124,16 +124,19 @@ export const LAYOUT_CONFIGS: LayoutConfig[] = [
   {
     id: 'lifestyle',
     name: 'Lifestyle Zone',
-    imagePath: '/BH Events Layout 11 (Lifestyle).png',
+    imagePath: '/BH Events Layout 11 (Lifestyle).webp',
     categories: ['lifestyle'],
     description: 'Fashion, accessories, home décor, and lifestyle products',
   },
   {
     id: 'real-estate-food',
     name: 'Real Estate & Food Zone',
-    imagePath: '/BH Events Layout 12 (Real Estate and Food).png',
+    imagePath: '/BH Events Layout 12 (Real Estate and Food).webp',
     categories: ['real-estate', 'food'],
     description: 'Real estate showcases and food court',
   },
 ]
+
+
+
 

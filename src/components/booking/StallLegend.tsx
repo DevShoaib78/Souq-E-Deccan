@@ -54,3 +54,7 @@ export function StallLegend({ showBooked = true }: StallLegendProps) {
   )
 }
 
+
+
+
+

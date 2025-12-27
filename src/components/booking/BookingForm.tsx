@@ -258,3 +258,7 @@ Layout: ${stall.layout === 'lifestyle' ? 'Lifestyle Zone' : 'Real Estate & Food 
   )
 }
 
+
+
+
+
