@@ -58,8 +58,8 @@ export function TermsModal({ isOpen, onClose }: TermsModalProps) {
                                     </h3>
                                     <p className="text-coffee/80 leading-relaxed text-sm md:text-base">
                                         The Organizer does not guarantee any specific volume of footfall, sales, or
-                                        business leads. Participation is at the Vendor's own risk, and no refunds or
-                                        compensation will be given based on the Vendor's commercial performance.
+                                        business leads. Participation is at the Vendor&apos;s own risk, and no refunds or
+                                        compensation will be given based on the Vendor&apos;s commercial performance.
                                     </p>
                                 </div>
 
@@ -69,7 +69,7 @@ export function TermsModal({ isOpen, onClose }: TermsModalProps) {
                                         2. Limitation of Liability
                                     </h3>
                                     <p className="text-coffee/80 leading-relaxed text-sm md:text-base">
-                                        The Organizer's total liability to the Vendor for any claim is strictly limited
+                                        The Organizer&apos;s total liability to the Vendor for any claim is strictly limited
                                         to the amount paid by the Vendor for the stall booking. The Organizer is not
                                         liable for any indirect, consequential, or economic losses (e.g., loss of profit,
                                         loss of reputation).
@@ -83,7 +83,7 @@ export function TermsModal({ isOpen, onClose }: TermsModalProps) {
                                     </h3>
                                     <p className="text-coffee/80 leading-relaxed text-sm md:text-base">
                                         The Vendor agrees to indemnify and hold harmless the Organizer against all
-                                        claims, demands, losses, costs, or damages arising from the Vendor's negligence,
+                                        claims, demands, losses, costs, or damages arising from the Vendor&apos;s negligence,
                                         products, display, or staff conduct.
                                     </p>
                                 </div>
@@ -95,7 +95,7 @@ export function TermsModal({ isOpen, onClose }: TermsModalProps) {
                                     </h3>
                                     <p className="text-coffee/80 leading-relaxed text-sm md:text-base">
                                         The Organizer is not responsible for the safety, theft, or damage of the
-                                        Vendor's goods, cash, or personal belongings. Security provided at the venue is
+                                        Vendor&apos;s goods, cash, or personal belongings. Security provided at the venue is
                                         for general crowd control only. Vendors are solely responsible for insurance and
                                         security of their own stall.
                                     </p>
