@@ -165,3 +165,4 @@ INSERT INTO stalls (id, layout, label, category, status, position, stall_type, s
 -- ============================================================================
 
 
+

@@ -53,18 +53,37 @@ export default function AdminDashboard({ userEmail }: AdminDashboardProps) {
     fetchStatuses()
   }, [selectedLayout])
 
-  // Toggle stall status
+  // Toggle stall status - uses UPSERT to create stall if it doesn't exist
   async function toggleStatus(stallId: string) {
     const currentStatus = statusMap.get(stallId) || 'available'
     const newStatus = currentStatus === 'available' ? 'booked' : 'available'
     
     setUpdating(stallId)
     
+    // Find the stall data from local stalls
+    const stallData = stalls.find(s => s.id === stallId)
+    if (!stallData) {
+      setUpdating(null)
+      return
+    }
+    
     const supabase = getSupabaseClient()
+    
+    // Use UPSERT - this will INSERT if stall doesn't exist, UPDATE if it does
     const { error } = await supabase
       .from('stalls')
-      .update({ status: newStatus })
-      .eq('id', stallId)
+      .upsert({
+        id: stallId,
+        layout: stallData.layout === 'lifestyle' ? 'lifestyle' : 'real-estate-food',
+        label: stallData.label,
+        category: stallData.category,
+        status: newStatus,
+        position: stallData.position,
+        stall_type: stallData.stallType || 'standard',
+        size: stallData.size || '3x2m',
+      }, { 
+        onConflict: 'id' 
+      })
     
     if (error) {
       console.error('Error updating status:', error)
@@ -98,7 +117,7 @@ export default function AdminDashboard({ userEmail }: AdminDashboardProps) {
   const [seeding, setSeeding] = useState(false)
   
   async function handleSeedDatabase() {
-    if (!confirm('This will reset all stalls to "available". Continue?')) {
+    if (!confirm('This will reset ALL stalls back to "Available". Are you sure?')) {
       return
     }
     
@@ -108,14 +127,14 @@ export default function AdminDashboard({ userEmail }: AdminDashboardProps) {
       const data = await response.json()
       
       if (data.success) {
-        alert(`Successfully seeded ${data.count} stalls!`)
+        alert('All stalls have been reset to Available!')
         // Refresh the page to reload data
         window.location.reload()
       } else {
-        alert(`Seed failed: ${data.error}`)
+        alert(`Reset failed: ${data.error}`)
       }
     } catch (err) {
-      alert('Failed to seed database')
+      alert('Failed to reset stalls')
       console.error(err)
     } finally {
       setSeeding(false)
@@ -138,12 +157,13 @@ export default function AdminDashboard({ userEmail }: AdminDashboardProps) {
           </div>
           <div className="flex items-center gap-3">
             <span className="text-slate-300 text-sm hidden sm:inline">{userEmail}</span>
-            <button
+<button
               onClick={handleSeedDatabase}
               disabled={seeding}
-              className="px-3 py-2 bg-emerald-600 hover:bg-emerald-500 disabled:opacity-50 text-white rounded-lg text-sm transition-colors"
+              className="px-3 py-2 bg-slate-600 hover:bg-slate-500 disabled:opacity-50 text-white rounded-lg text-sm transition-colors"
+              title="Reset all stalls back to Available"
             >
-              {seeding ? 'Seeding...' : 'Seed DB'}
+              {seeding ? 'Resetting...' : 'Reset Stalls'}
             </button>
             <button
               onClick={handleSignOut}

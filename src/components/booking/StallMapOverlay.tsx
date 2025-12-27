@@ -19,6 +19,7 @@ interface StallMapOverlayProps {
   selectedStallId: string | null
   onStallSelect: (stall: StallData) => void
   onStallDeselect: () => void
+  onBookedStallClick?: () => void
 }
 
 export function StallMapOverlay({
@@ -27,6 +28,7 @@ export function StallMapOverlay({
   selectedStallId,
   onStallSelect,
   onStallDeselect,
+  onBookedStallClick,
 }: StallMapOverlayProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const imageContainerRef = useRef<HTMLDivElement>(null)
@@ -115,6 +117,8 @@ export function StallMapOverlay({
     e.stopPropagation()
     
     if (stall.status === 'booked') {
+      // Notify parent that a booked stall was clicked
+      onBookedStallClick?.()
       return // Don't allow selection of booked stalls
     }
 
@@ -123,7 +127,7 @@ export function StallMapOverlay({
     } else {
       onStallSelect(stall)
     }
-  }, [selectedStallId, onStallSelect, onStallDeselect])
+  }, [selectedStallId, onStallSelect, onStallDeselect, onBookedStallClick])
 
   // Get stall styling based on status
   const getStallStyles = useCallback((stall: StallData) => {

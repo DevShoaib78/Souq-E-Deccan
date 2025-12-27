@@ -60,13 +60,14 @@
 - Booking form that generates WhatsApp message
 - Direct WhatsApp integration for deal closure
 
-### 3. Admin System (Implemented, Needs Testing)
+### 3. Admin System (Complete & Working)
 - Protected admin route (`/admin`)
 - Admin login with Supabase Auth
 - Admin dashboard to view/manage stalls
-- Ability to mark stalls as Available/Booked
-- Database seeding functionality
-- Real-time status updates
+- **Click-to-toggle** stall status (Available ↔ Booked)
+- **Auto-create stalls** on first click (UPSERT - no manual seeding required)
+- **Reset Stalls** button to reset all stalls to Available
+- Real-time status synchronization with booking page
 
 ---
 
@@ -152,8 +153,11 @@ supabase/
 
 ### Row Level Security (RLS)
 - **SELECT:** Public (anyone can view stalls)
-- **UPDATE:** Authenticated users only (admin)
-- **ALL:** Service role (for seeding)
+- **INSERT:** Authenticated users only (admin can create stalls)
+- **UPDATE:** Authenticated users only (admin can toggle status)
+- **DELETE:** Authenticated users only (admin can delete stalls)
+
+> **Important:** RLS policies use `auth.uid() IS NOT NULL` to check for authenticated users (NOT `auth.role()`)
 
 ### Realtime
 Realtime is enabled on the `stalls` table for live updates.
@@ -208,8 +212,9 @@ The app will be available at `http://localhost:3000`
 1. Go to [Supabase Dashboard](https://supabase.com/dashboard/project/kcoydebzmrzxomnvhooq)
 2. Navigate to **SQL Editor**
 3. Run the contents of `supabase/schema.sql` (if not already done)
-4. Go to **Authentication → Users** and create an admin user
-5. Login to `/admin` and click "Seed Database" to populate stalls
+4. Run `ALTER PUBLICATION supabase_realtime ADD TABLE stalls;` to enable real-time
+5. Go to **Authentication → Users** and create an admin user
+6. Login to `/admin` and start clicking stalls to book/unbook them (no seeding required!)
 
 ---
 
@@ -228,10 +233,13 @@ The app will be available at `http://localhost:3000`
 ### Admin Flow
 1. Visit `/admin` (redirects to `/admin/login` if not authenticated)
 2. Login with admin credentials
-3. View all stalls by layout
-4. Search/filter stalls
-5. Click stall to toggle status (Available ↔ Booked)
-6. Changes reflect in real-time for visitors
+3. View all stalls by layout (Lifestyle or Real Estate & Food)
+4. Search/filter stalls by name
+5. **Click any stall to toggle status** (Available ↔ Booked)
+   - Stalls are auto-created in database on first click
+   - Changes save instantly to Supabase
+6. Changes reflect **immediately** on the public booking page
+7. Use "Reset Stalls" button to reset all stalls to Available (if needed)
 
 ---
 
@@ -256,10 +264,13 @@ The app will be available at `http://localhost:3000`
 
 ## 🐛 Known Issues & TODOs
 
+### Resolved ✅
+1. ~~**State Synchronization** - Admin changes now sync to booking page in real-time~~
+2. ~~**RLS Policy Bug** - Fixed `auth.role()` → `auth.uid()` for proper authentication~~
+3. ~~**Database Seeding** - No longer required; stalls auto-create on first admin click~~
+
 ### Needs Attention
 1. **Stall Overlay Precision** - Some stall overlays may need fine-tuning for pixel-perfect alignment with the layout images
-2. **Admin Dashboard Testing** - Full end-to-end testing of admin flow needed
-3. **Database Seeding** - First admin login needs to seed the database
 
 ### Future Enhancements
 - [ ] Email notifications for bookings
@@ -287,14 +298,17 @@ The app will be available at `http://localhost:3000`
 
 ## 📝 Commit History (Recent)
 
-| Commit | Description |
-|--------|-------------|
+| Date | Description |
+|------|-------------|
+| Dec 27, 2025 | fix: State sync between admin and booking page |
+| Dec 27, 2025 | feat: UPSERT for admin - stalls auto-create on click |
+| Dec 27, 2025 | feat: Rename "Seed DB" to "Reset Stalls" |
+| Dec 27, 2025 | fix: Booking page now uses useStalls hook for real-time data |
+| Dec 27, 2025 | feat: Add error toast when clicking booked stalls |
 | `3dd8fa9` | fix: Remove strict Database typing from Supabase clients |
 | `7bd51fa` | fix: Add type assertion for Supabase query result |
 | `d517b2e` | fix: Escape quotes in AdminDashboard to fix ESLint error |
 | `9f665e5` | feat: Add Supabase backend integration for stall booking |
-| `ad53547` | fix: Update component exports |
-| `8f266fc` | feat: Update event dates to 26-28 February 2026 |
 
 ---
 
@@ -310,4 +324,5 @@ The app will be available at `http://localhost:3000`
 ---
 
 *This document should be updated as the project evolves.*
+
 

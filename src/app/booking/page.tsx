@@ -1,16 +1,16 @@
 'use client'
 
-import { useState, useCallback, useMemo } from 'react'
+import { useState, useCallback } from 'react'
 import Link from 'next/link'
 import { motion, AnimatePresence } from 'framer-motion'
-import { ArrowLeft, Info, CheckCircle2 } from 'lucide-react'
+import { ArrowLeft, Info, CheckCircle2, XCircle } from 'lucide-react'
 import { 
   StallMapOverlay, 
   BookingForm, 
   StallLegend, 
   LayoutSelector 
 } from '@/components/booking'
-import { getStallsByLayout } from '@/data/stall-maps'
+import { useStalls } from '@/hooks/useStalls'
 import type { StallData, LayoutType } from '@/types/booking'
 import { eventDetails } from '@/data'
 
@@ -20,10 +20,10 @@ export default function BookingPage() {
   const [selectedStall, setSelectedStall] = useState<StallData | null>(null)
   const [showForm, setShowForm] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+  const [showBookedError, setShowBookedError] = useState(false)
 
-  // Get stalls for the selected layout
-  // In future: This would fetch from backend API with real availability status
-  const stalls = useMemo(() => getStallsByLayout(selectedLayout), [selectedLayout])
+  // Get stalls for the selected layout from Supabase with real-time updates
+  const { stalls, loading: stallsLoading } = useStalls(selectedLayout)
 
   // Handlers
   const handleLayoutChange = useCallback((layout: LayoutType) => {
@@ -32,8 +32,20 @@ export default function BookingPage() {
   }, [])
 
   const handleStallSelect = useCallback((stall: StallData) => {
+    // Double-check stall availability (in case of race condition)
+    if (stall.status === 'booked') {
+      setShowBookedError(true)
+      setTimeout(() => setShowBookedError(false), 3000)
+      return
+    }
     setSelectedStall(stall)
     setShowForm(true)
+  }, [])
+
+  // Handler for when user clicks a booked stall
+  const handleBookedStallClick = useCallback(() => {
+    setShowBookedError(true)
+    setTimeout(() => setShowBookedError(false), 3000)
   }, [])
 
   const handleStallDeselect = useCallback(() => {
@@ -155,13 +167,23 @@ export default function BookingPage() {
             transition={{ delay: 0.4 }}
             className="bg-white border border-gold/20 p-4 md:p-6"
           >
-            <StallMapOverlay
-              layout={selectedLayout}
-              stalls={stalls}
-              selectedStallId={selectedStall?.id ?? null}
-              onStallSelect={handleStallSelect}
-              onStallDeselect={handleStallDeselect}
-            />
+            {stallsLoading ? (
+              <div className="flex items-center justify-center py-20">
+                <div className="flex flex-col items-center gap-4">
+                  <div className="animate-spin h-10 w-10 border-4 border-gold border-t-transparent rounded-full" />
+                  <p className="font-body text-coffee/60 text-sm">Loading stalls...</p>
+                </div>
+              </div>
+            ) : (
+              <StallMapOverlay
+                layout={selectedLayout}
+                stalls={stalls}
+                selectedStallId={selectedStall?.id ?? null}
+                onStallSelect={handleStallSelect}
+                onStallDeselect={handleStallDeselect}
+                onBookedStallClick={handleBookedStallClick}
+              />
+            )}
           </motion.div>
 
           {/* Selected Stall Info (shown when selected but form not open) */}
@@ -246,6 +268,26 @@ export default function BookingPage() {
               <p className="font-body font-semibold">Booking Request Sent!</p>
               <p className="font-body text-sm text-white/80">
                 We&apos;ll contact you shortly to confirm.
+              </p>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Booked Stall Error Toast */}
+      <AnimatePresence>
+        {showBookedError && (
+          <motion.div
+            initial={{ opacity: 0, y: 50 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 50 }}
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 px-6 py-4 bg-red-600 text-white shadow-xl"
+          >
+            <XCircle size={24} />
+            <div>
+              <p className="font-body font-semibold">This stall is already booked</p>
+              <p className="font-body text-sm text-white/80">
+                Please select a different available stall.
               </p>
             </div>
           </motion.div>
