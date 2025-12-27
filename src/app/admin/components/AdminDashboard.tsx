@@ -39,7 +39,9 @@ export default function AdminDashboard({ userEmail }: AdminDashboardProps) {
       }
       
       const newStatusMap = new Map<string, 'available' | 'booked'>()
-      data?.forEach(row => {
+      // Type assertion for the query result
+      const rows = data as { id: string; status: string }[] | null
+      rows?.forEach(row => {
         newStatusMap.set(row.id, row.status as 'available' | 'booked')
       })
       
